@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block encabezado %}
+<a href="{% url 'escuelas_alta' %}"><img src="{% static 'images/icons8-plus-32.png' %}" /></a>
+{% endblock %}
+
+{% block contenido %}
+  <table class="w3-table-all w3-hoverable">
+    <thead>
+      <tr class="w3-dark-grey">
+        <th>Acciones</th>
+        <th>Nombre</th>
+        <th>Escuela</th>
+        <th>Sexo</th>
+        <th>Fecha de Nacimiento</th>
+      </tr>
+    </thead>
+    {% for maestro in maestros %}
+    <tr>
+      <td><a href="{% url 'escuelas_eliminar' maestro.id %}"><img src="{% static 'images/icons8-trash-32.png' %}" alt="Eliminar" /></a> <a href="{% url 'escuelas_editar' maestro.id %}"><img src="{% static 'images/icons8-edit-32.png' %}" alt="Editar" /></a></td>
+      <td>{{ maestro.nombre }}</td>
+      <td>{{ maestro.escuela.siglas }}</td>
+      {% if maestro.sexo == 2 %}
+        <td>Hombre</td>
+      {% elif maestro.sexo == 1 %}
+        <td>Mujer</td>
+      {% else %}
+        <td>Otro</td>
+      {% endif %}      
+      <td>{{ maestro.fecha_nacimiento }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
