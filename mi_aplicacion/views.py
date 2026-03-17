@@ -99,6 +99,68 @@ class MaestrosAlta(View):
         cdx={
         "titulo":"Maestros",
         "subtitulo":"Alta de maestro",
-        "form":MaestroForm()
+        "form":MaestroForm(),
+        "fondo":"bg-success p-3",
+        "texto_boton":"Guardar"
         }
         return render(request, 'maestros/CRUD.html', cdx)
+    def post(self, request):
+        form = MaestroForm(request.POST, request.FILES)        
+        if form.is_valid():
+            form.save()
+            return redirect('maestros')
+        else:
+            print(f"form.errors: {form.errors}")
+            print(f"form.is_valid(): {form.is_valid()}")
+            print(f"form.cleaned_data: {form.cleaned_data if form.is_valid() else 'N/A'}")
+            cdx={
+                "titulo":"Maestros",
+                "subtitulo":"Alta de maestro",
+                "form":form,
+                "mensaje":"Error al crear el maestro",
+                "fondo":"bg-success p-3",
+                "texto_boton":"Guardar"
+            }
+        return render(request, 'maestros/CRUD.html', cdx)
+    
+class MaestroEditar(View):
+    def get(self, request, id):
+        maestro = Maestro.objects.filter(id=id).first()
+        form = MaestroForm(instance=maestro)
+        cdx={
+        "titulo":"Maestros",
+        "subtitulo":"Editar maestro",
+        "form":form,
+        "fondo":"bg-warning p-3",
+        "texto_boton":"Actualizar"
+        }
+        return render(request, 'maestros/CRUD.html', cdx)
+    
+    def post(self, request, id):
+        maestro = Maestro.objects.filter(id=id).first()
+        form = MaestroForm(request.POST, request.FILES, instance=maestro)
+        if form.is_valid():
+            form.save()
+            return redirect('maestros')
+        return redirect("home") 
+    
+class MaestroEliminar(View):
+    def get(self, request, id):
+        maestro = Maestro.objects.filter(id=id).first()
+        form = MaestroForm(instance=maestro)
+        cdx={
+        "titulo":"Maestros",
+        "subtitulo":"Eliminar maestro",
+        "form":form,
+        "fondo":"bg-danger p-3",
+        "texto_boton":"Eliminar"
+        }
+        return render(request, 'maestros/CRUD.html', cdx)
+    
+    def post(self, request, id):
+        maestro = Maestro.objects.filter(id=id).first()
+        form = MaestroForm(request.POST, request.FILES, instance=maestro)
+        if form.is_valid():
+            maestro.delete()
+            return redirect('maestros')
+        return redirect("home")

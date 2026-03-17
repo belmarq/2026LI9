@@ -27,9 +27,18 @@ class MaestroForm(ModelForm):
                 Column('fecha_nacimiento', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
             ),
-            Submit('submit', 'Guardar', css_class='btn btn-primary')
+            Submit('submit', '{{ texto_boton }}', css_class='btn btn-primary')
         )
 
     class Meta:
         model = Maestro
         fields = ['nombre', 'escuela', 'sexo', 'fecha_nacimiento']
+        labels = {
+            'nombre': 'Nombre Completo',
+            'escuela': 'Escuela a la que pertenece',
+            'sexo': 'Sexo',
+            'fecha_nacimiento': 'Fecha de Nacimiento'
+        }
+        widgets = {
+            'fecha_nacimiento': forms.DateInput(format='%Y-%m-%d',attrs={'type': 'date', 'class': 'form-control'}), 
+        }

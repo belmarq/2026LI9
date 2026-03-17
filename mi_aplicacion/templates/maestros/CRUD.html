@@ -2,8 +2,10 @@
 {% load crispy_forms_tags %}
 
 {% block contenido %}
-<form method="post" enctype="multipart/form-data">
-{% csrf_token %}
-{% crispy form %}
-</form>
+<div class="{{ fondo }}">
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% crispy form %}
+    </form>
+</div>
 {% endblock %}
