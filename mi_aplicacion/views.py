@@ -164,3 +164,12 @@ class MaestroEliminar(View):
             maestro.delete()
             return redirect('maestros')
         return redirect("home")
+    
+class Alumnos(View):
+    def get(self, request):
+        alumnos = Alumno.objects.all()
+        cdx={
+            "titulo":"Alumnos",
+            "subtitulo":"Lista de alumnos",
+            "alumnos": alumnos}
+        return render(request, "alumnos/alumnos.html", cdx)
