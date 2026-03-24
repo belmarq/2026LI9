@@ -24,3 +24,20 @@ class AlumnoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Alumno
         fields = "__all__"
+
+    def validate(self, attrs):
+        escuela = attrs.get("escuela")
+        maestro = attrs.get("maestro")
+
+        if self.instance:
+            escuela = escuela or self.instance.escuela
+            maestro = maestro or self.instance.maestro
+
+        if escuela and maestro and maestro.escuela_id != escuela.id:
+            raise serializers.ValidationError({
+                "maestro": "El maestro debe pertenecer a la misma escuela que el alumno."
+            })
+
+
+        return attrs
+
