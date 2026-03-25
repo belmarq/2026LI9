@@ -1,10 +1,20 @@
 from django.urls import include, path
 from mi_aplicacion.views import EscuelaAlta, EscuelaEditar, MaestroEditar, EscuelaEditar, EscuelaEliminar, Home, Escuelas, Maestros, MaestrosAlta, MaestroEditar, MaestroEliminar
 from rest_framework import routers
-from mi_aplicacion.viewsets import AlumnoViewSet, AlumnoViewSet, MaestroViewSet, UserViewSet, EscuelaViewSet
+from mi_aplicacion.viewsets import (
+    AlumnoViewSet, 
+    AlumnoViewSet, 
+    GroupViewSet, 
+    MaestroViewSet,
+    PermissionViewSet, 
+    UserViewSet, 
+    EscuelaViewSet,
+)
 
 router = routers.DefaultRouter()
 router.register(r"users", UserViewSet)
+router.register(r"groups", GroupViewSet)
+router.register(r"permissions", PermissionViewSet)
 router.register(r"escuelas", EscuelaViewSet)
 router.register(r"maestros", MaestroViewSet)
 router.register(r"alumnos", AlumnoViewSet)
