@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block encabezado %}
+{% if user.is_authenticated and perms.mi_aplicacion.add_maestro %}
 <a href="{% url 'maestros_alta' %}"><img src="{% static 'images/icons8-plus-32.png' %}" /></a>
+{% endif %}
 {% endblock %}
 
 {% block contenido %}
@@ -18,7 +20,7 @@
     </thead>
     {% for maestro in maestros %}
     <tr>
-      <td><a href="{% url 'maestros_eliminar' maestro.id %}"><img src="{% static 'images/icons8-trash-32.png' %}" alt="Eliminar" /></a> <a href="{% url 'maestros_editar' maestro.id %}"><img src="{% static 'images/icons8-edit-32.png' %}" alt="Editar" /></a></td>
+      <td>{% if user.is_authenticated and perms.mi_aplicacion.delete_maestro %}<a href="{% url 'maestros_eliminar' maestro.id %}"><img src="{% static 'images/icons8-trash-32.png' %}" alt="Eliminar" /></a>{% endif %} {% if user.is_authenticated and perms.mi_aplicacion.change_maestro %}<a href="{% url 'maestros_editar' maestro.id %}"><img src="{% static 'images/icons8-edit-32.png' %}" alt="Editar" /></a>{% endif %}</td>
       <td>{{ maestro.nombre }}</td>
       <td>{{ maestro.escuela.siglas }}</td>
       {% if maestro.sexo == 2 %}
