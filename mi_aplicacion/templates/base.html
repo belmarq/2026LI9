@@ -28,6 +28,8 @@
     </h2>
   </div>
   <div class="w3-third w3-container">
+    {% block filtros %}
+    {% endblock %}
     {% if messages %}
       {% for message in messages %}
         <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">

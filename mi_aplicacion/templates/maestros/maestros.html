@@ -7,6 +7,30 @@
 {% endif %}
 {% endblock %}
 
+{% block filtros %}
+<form method="post">
+  {% csrf_token %}
+  <div class="w3-row-padding w3-margin-top">
+    <div class="w3-third">
+      <input class="w3-input w3-border" type="text" name="nombre" placeholder="Nombre" value="{{ request.GET.nombre }}">
+    </div>
+    <div class="w3-third">
+      <select class="w3-select w3-border" name="escuela">
+        <option value="0">Todas las escuelas</option>
+        {% for escuela in escuelas %}
+        <option value="{{ escuela.id }}" 
+        {% if request.GET.escuela == escuela.id|stringformat:"s" %}selected{% endif %}>{{ escuela.siglas }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="w3-third">
+      <button class="w3-button w3-teal" type="submit">Filtrar</button>
+    </div>
+  </div>
+</form>
+
+{% endblock %}
+
 {% block contenido %}
   <table class="w3-table-all w3-hoverable">
     <thead>
