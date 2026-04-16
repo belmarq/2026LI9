@@ -109,7 +109,7 @@ class Maestros(View):
         escuela_id = int(escuela) if escuela else None
         # print(f"escuela: {escuela}, nombre: {nombre}")
         # print(f"request.POST: {request.POST}")        
-        if escuela_id != 0 and nombre:
+        if escuela_id != 0:
             maestros = Maestro.objects.filter(escuela_id=escuela_id, nombre__icontains=nombre).all()
         else:
             maestros = Maestro.objects.filter(nombre__icontains=nombre).all()   
