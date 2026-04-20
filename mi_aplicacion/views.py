@@ -106,7 +106,7 @@ class Maestros(View):
             return redirect("home")
         escuela = request.POST.get("escuela")
         nombre = request.POST.get("nombre")
-        escuela_id = int(escuela) if escuela else None
+        escuela_id = int(escuela) if escuela else 0
         # print(f"escuela: {escuela}, nombre: {nombre}")
         # print(f"request.POST: {request.POST}")        
         if escuela_id != 0:
@@ -124,6 +124,9 @@ class Maestros(View):
     
 class MaestrosAlta(View):
     def get(self, request):
+        if not request.user.has_perm('mi_aplicacion.add_maestro'):
+            messages.error(request, f" {request.user.username} No tienes permiso para agregar maestros.")
+            return redirect("home")
         cdx={
         "titulo":"Maestros",
         "subtitulo":"Alta de maestro",
@@ -133,6 +136,9 @@ class MaestrosAlta(View):
         }
         return render(request, 'maestros/CRUD.html', cdx)
     def post(self, request):
+        if not request.user.has_perm('mi_aplicacion.add_maestro'):
+            messages.error(request, f" {request.user.username} No tienes permiso para agregar maestros.")
+            return redirect("home")
         form = MaestroForm(request.POST, request.FILES)        
         if form.is_valid():
             form.save()
@@ -153,6 +159,9 @@ class MaestrosAlta(View):
     
 class MaestroEditar(View):
     def get(self, request, id):
+        if not request.user.has_perm('mi_aplicacion.change_maestro'):
+            messages.error(request, f" {request.user.username} No tienes permiso para editar maestros.")
+            return redirect("home")
         maestro = Maestro.objects.filter(id=id).first()
         form = MaestroForm(instance=maestro)
         cdx={
@@ -165,6 +174,9 @@ class MaestroEditar(View):
         return render(request, 'maestros/CRUD.html', cdx)
     
     def post(self, request, id):
+        if not request.user.has_perm('mi_aplicacion.change_maestro'):
+            messages.error(request, f" {request.user.username} No tienes permiso para editar maestros.")
+            return redirect("home")
         maestro = Maestro.objects.filter(id=id).first()
         form = MaestroForm(request.POST, request.FILES, instance=maestro)
         if form.is_valid():
@@ -174,6 +186,9 @@ class MaestroEditar(View):
     
 class MaestroEliminar(View):
     def get(self, request, id):
+        if not request.user.has_perm('mi_aplicacion.delete_maestro'):
+            messages.error(request, f" {request.user.username} No tienes permiso para eliminar maestros.")
+            return redirect("home")
         maestro = Maestro.objects.filter(id=id).first()
         form = MaestroForm(instance=maestro)
         cdx={
@@ -186,6 +201,9 @@ class MaestroEliminar(View):
         return render(request, 'maestros/CRUD.html', cdx)
     
     def post(self, request, id):
+        if not request.user.has_perm('mi_aplicacion.delete_maestro'):
+            messages.error(request, f" {request.user.username} No tienes permiso para eliminar maestros.")
+            return redirect("home")
         maestro = Maestro.objects.filter(id=id).first()
         form = MaestroForm(request.POST, request.FILES, instance=maestro)
         if form.is_valid():
