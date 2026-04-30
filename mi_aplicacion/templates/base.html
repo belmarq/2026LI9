@@ -9,6 +9,9 @@
 <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
   <button class="w3-bar-item w3-button w3-large"
   onclick="w3_close()">Cerrar &times;</button>
+  {% if user.is_authenticated and perms.auth.view_user %}
+  <a href="/usuarios/" class="w3-bar-item w3-button">Usuarios</a>
+  {% endif %}
   <a href="/escuelas/" class="w3-bar-item w3-button">Escuelas</a>
   {% if user.is_authenticated and perms.mi_aplicacion.view_maestro %}
   <a href="/maestros/" class="w3-bar-item w3-button">Maestros</a>

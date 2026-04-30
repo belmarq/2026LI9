@@ -5,6 +5,47 @@ from django import forms
 from django.forms import ModelForm
 
 from mi_aplicacion.models import Escuela, Maestro
+from django.contrib.auth.models import User, Group
+
+class UsuarioForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UsuarioForm,self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column('username', css_class='form-group col-md-6 mb-0'),
+                Column('email', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('first_name', css_class='form-group col-md-6 mb-0'),
+                Column('last_name', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('is_active', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Submit('submit', '{{ texto_boton }}', css_class='btn btn-primary')
+        )
+        
+    class Meta:
+        model = User
+        fields = ("username", "first_name", "last_name", "email", "is_active")
+
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['username'])
+        
+        if commit:
+            user.save()
+            group = Group.objects.get(name='capturista')
+            user.groups.add(group)
+        return user
+
+
+    
 
 class EscuelaForm(ModelForm):
     class Meta:

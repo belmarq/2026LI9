@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
+from django.contrib.auth.models import User
 
-from mi_aplicacion.forms import EscuelaForm, MaestroForm
+from mi_aplicacion.forms import EscuelaForm, MaestroForm, UsuarioForm
 
 from .models import Escuela, Maestro, Alumno
 
@@ -12,6 +13,72 @@ class Home(View):
             "titulo":"Home",
             "subtitulo":"Bienvenido a mi aplicación"}
         return render(request, "home/home.html", cdx)
+    
+class Usuarios(View):
+    def get(self, request):
+        usuarios = User.objects.all()
+        cdx={
+            "titulo":"Usuarios",
+            "subtitulo":"Listado de usuarios",
+            "usuarios": usuarios}
+        return render(request, "usuarios/usuarios.html", cdx)
+    
+class UsuarioAlta(View):
+    def get(self, request):
+        cdx={
+            "titulo":"Usuarios",
+            "subtitulo":"Alta de usuario nuevo",
+            "fondo":"bg-success bg-opacity-25 p-3",
+            "texto_boton":"Guardar",
+            "form": UsuarioForm()}
+        return render(request, "usuarios/CRUD.html", cdx)
+    
+    def post(self, request):
+        form = UsuarioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('usuarios')
+        else:
+            cdx={
+                "titulo":"Altas de usuario",
+                "subtitulo":"Alta de usuario",
+                "texto_boton":"Guardar",
+                "form":form,
+                "fondo":"bg-success bg-opacity-25 p-3",
+                "mensaje":"Error al crear el usuario"
+            }
+        return render(request, 'usuarios/CRUD.html', cdx)
+
+class UsuarioEliminar(View):
+    def get(self, request, id):
+        usuario = User.objects.filter(id=id).first()
+        form = UsuarioForm(instance=usuario)
+        cdx={
+        "titulo":"Usuarios",
+        "subtitulo":"Eliminar usuario",
+        "texto_boton":"Eliminar",
+        "form":form,
+        "fondo":"bg-danger bg-opacity-25 p-3"
+        }
+        return render(request, 'usuarios/CRUD.html', cdx)
+    
+    def post(self, request, id):
+        usuario = User.objects.filter(id=id).first()
+        form = UsuarioForm(request.POST, instance=usuario)
+        if form.is_valid():
+            usuario.delete()
+            return redirect('usuarios')
+        return redirect("home")
+
+
+class Escuelas(View):
+    def get(self, request):
+        escuelas = Escuela.objects.all()
+        cdx={
+            "titulo":"Escuelas",
+            "subtitulo":"Listado de escuelas",
+            "escuelas": escuelas}
+        return render(request, "escuelas/escuelas.html", cdx)
     
 class Escuelas(View):
     def get(self, request):

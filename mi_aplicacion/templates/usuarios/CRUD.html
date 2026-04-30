@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block contenido %}
+<div class="{{ fondo }}">
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% crispy form %}
+    </form>
+</div>
+{% endblock %}
