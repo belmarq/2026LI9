@@ -64,8 +64,9 @@ class MaestroForm(ModelForm):
                 css_class='form-row'
             ),
             Row(
-                Column('sexo', css_class='form-group col-md-6 mb-0'),
-                Column('fecha_nacimiento', css_class='form-group col-md-6 mb-0'),
+                Column('sexo', css_class='form-group col-md-4 mb-0'),
+                Column('fecha_nacimiento', css_class='form-group col-md-4 mb-0'),
+                Column('licencia_manejo', css_class='form-group col-md-4 mb-0'),
                 css_class='form-row'
             ),
             Submit('submit', '{{ texto_boton }}', css_class='btn btn-primary')
@@ -73,12 +74,13 @@ class MaestroForm(ModelForm):
 
     class Meta:
         model = Maestro
-        fields = ['nombre', 'escuela', 'sexo', 'fecha_nacimiento']
+        fields = ['nombre', 'escuela', 'sexo', 'fecha_nacimiento', 'licencia_manejo']
         labels = {
             'nombre': 'Nombre Completo',
             'escuela': 'Escuela a la que pertenece',
             'sexo': 'Sexo',
-            'fecha_nacimiento': 'Fecha de Nacimiento'
+            'fecha_nacimiento': 'Fecha de Nacimiento',
+            'licencia_manejo': 'Licencia de Manejo'
         }
         widgets = {
             'fecha_nacimiento': forms.DateInput(format='%Y-%m-%d',attrs={'type': 'date', 'class': 'form-control'}), 

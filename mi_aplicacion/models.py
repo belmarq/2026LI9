@@ -23,6 +23,7 @@ class Maestro(models.Model):
     escuela = models.ForeignKey(Escuela, on_delete=models.PROTECT, null=False)
     sexo = models.IntegerField(choices=SEXO, default=NEUTRO, null=False)
     fecha_nacimiento = models.DateField(null=False)
+    licencia_manejo = models.ImageField(upload_to="maestros/licencias/", null=True, blank=True)
 
     def __str__(self):
         cadena = f"( {self.id} ) {self.nombre} de la escuela {self.escuela.siglas}"
